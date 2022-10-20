@@ -6,7 +6,9 @@
         dist:instant="false"
         dist:title="@string/title_dynamicfeature_one" >
         <dist:delivery>
-            <dist:on-demand />
+            <dist:on-demand>
+                <dist:removable dist:value="true" />
+            </dist:on-demand>
         </dist:delivery>
 
         <dist:fusing dist:include="true" />

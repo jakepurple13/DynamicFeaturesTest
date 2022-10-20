@@ -162,6 +162,9 @@ fun Features(vm: DynamicFeaturesViewModel = viewModel()) {
                         Button(onClick = { vm.uninstall() }) {
                             Text("Uninstall")
                         }
+                        Button(onClick = { println(vm.manager.installedModules.toString()) }) {
+                            Text("Print Installed Modules")
+                        }
                     }
                     Status.Downloaded -> {
                         Text("Downloaded!")
