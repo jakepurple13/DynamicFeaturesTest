@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">DynamicFeaturesTest</string>
+    <string name="title_dynamicfeature_one">Module Title Test</string>
+    <string name="title_activity_feature">FeatureActivity</string>
+</resources>
