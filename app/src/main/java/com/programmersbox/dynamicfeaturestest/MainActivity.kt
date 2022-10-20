@@ -18,8 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.play.core.ktx.bytesDownloaded
 import com.google.android.play.core.ktx.totalBytesToDownload
@@ -28,7 +28,11 @@ import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import com.google.android.play.core.tasks.Task
+import com.google.android.play.core.tasks.Tasks
 import com.programmersbox.dynamicfeaturestest.ui.theme.DynamicFeaturesTestTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -121,13 +125,16 @@ class DynamicFeaturesViewModel(
     }
 
     fun uninstall() {
-        manager.deferredUninstall(manager.installedModules.toList()).addOnSuccessListener {
-            status = Status.None
-            println(manager.installedModules.toString())
+        viewModelScope.launch(Dispatchers.IO) {
+            manager.deferredUninstall(manager.installedModules.toList()).addOnSuccessListener {
+                status = Status.None
+                println(manager.installedModules.toString())
+            }.await()
         }
     }
-
 }
+
+private fun <TResult> Task<TResult>.await(): TResult = Tasks.await(this)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
